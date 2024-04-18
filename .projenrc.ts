@@ -5,7 +5,7 @@ import { Changesets, Docgen, TypeScriptLibProject, Vitest } from "./projenrc";
 const org = "floydspace";
 const name = "effect-aws";
 const repo = `${org}/${name}`;
-const awsSdkVersion = "3.556.0";
+export const awsSdkVersion = "3.556.0";
 
 const project = new monorepo.MonorepoTsProject({
   name: name,
@@ -81,15 +81,27 @@ const dynamodbLib = new TypeScriptLibProject({
 });
 
 const clients = [
+  {name: 'account'},
+  {name: 'cloudtrail'},
+  {name: 'cloudwatch-events'},
+  {name: 'cloudwatch-logs'},
+  {name: 'cloudwatch'},
+  {name: 'cognito-identity-provider'},
   {name: 'ec2'},
   {name: 'elasticache'},
   {name: 'eventbridge'},
   {name: 'iam'},
+  {name: 'kinesis'},
   {name: 'lambda'},
+  {name: 'mq'},
+  {name: 'opensearch'},
+  {name: 'opensearchserverless'},
+  {name: 'rds'},
   {name: 's3', extraDeps: [`@aws-sdk/s3-request-presigner@^${awsSdkVersion}`]},
   {name: 'sfn'},
   {name: 'sns'},
   {name: 'sqs'},
+  {name: 'sts'},
 ];
 
 for (const {name, extraDeps = []} of clients) {

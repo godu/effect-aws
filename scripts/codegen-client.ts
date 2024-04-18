@@ -22,6 +22,7 @@ import {
 import { constVoid, flow, pipe } from "effect/Function";
 import Enquirer from "enquirer";
 import { config } from "./codegen.config";
+import { awsSdkVersion } from "../.projenrc";
 
 type Shape =
   | { type: "boolean" }
@@ -100,7 +101,7 @@ async function main() {
 
       const smithyModel = (await (
         await fetch(
-          `https://raw.githubusercontent.com/aws/aws-sdk-js-v3/main/codegen/sdk-codegen/aws-models/${serviceName}.json`,
+          `https://raw.githubusercontent.com/aws/aws-sdk-js-v3/v${awsSdkVersion}/codegen/sdk-codegen/aws-models/${serviceName}.json`,
         )
       ).json()) as SmithyModel;
 
@@ -179,7 +180,7 @@ async function generateClient([
 
   const smithyModel = (await (
     await fetch(
-      `https://raw.githubusercontent.com/aws/aws-sdk-js-v3/main/codegen/sdk-codegen/aws-models/${serviceName}.json`,
+      `https://raw.githubusercontent.com/aws/aws-sdk-js-v3/v3.556.0/codegen/sdk-codegen/aws-models/${serviceName}.json`,
     )
   ).json()) as SmithyModel;
 
@@ -232,10 +233,7 @@ export type TaggedException<T extends { name: string }> = T & {
 
 ${pipe(
   exportedErrors,
-  Array.map(
-    (e) =>
-      `export type ${e} = TaggedException<Sdk${e}>;`,
-  ),
+  Array.map((e) => `export type ${e} = TaggedException<Sdk${e}>;`),
   Array.join("\n"),
 )}
 
@@ -393,8 +391,8 @@ import {
 import { Default${sdkName}ClientConfigLayer } from "./${sdkName}ClientInstanceConfig";
 import {
   ${pipe(
-    [...importedErrors, 'TaggedException'],
-    Array.map(error => `type ${error}`),
+    [...importedErrors, "TaggedException"],
+    Array.map((error) => `type ${error}`),
     Array.join(",\n "),
   )},
   SdkError,
@@ -430,7 +428,7 @@ ${pipe(
     args: ${operationShape.input.target === SMITHY_API_UNIT ? "{}" : getLocalNameFromNamespace(operationShape.input.target)},
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-  ${operationShape.output.target === SMITHY_API_UNIT ? 'void' : getLocalNameFromNamespace(operationShape.output.target)},
+  ${operationShape.output.target === SMITHY_API_UNIT ? "void" : getLocalNameFromNamespace(operationShape.output.target)},
     ${pipe(["| SdkError", ...errors], Array.join("\n| "))}
   >`;
   }),
