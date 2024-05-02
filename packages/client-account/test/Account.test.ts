@@ -9,13 +9,13 @@ import * as Exit from "effect/Exit";
 import { pipe } from "effect/Function";
 import * as Layer from "effect/Layer";
 import {
-  BaseAccountServiceLayer,
+  BaseListRegionsServiceLayer,
   DefaultAccountClientConfigLayer,
-  DefaultAccountServiceLayer,
+  DefaultListRegionsServiceLayer,
   AccountClientInstance,
   AccountClientInstanceConfig,
-  AccountService,
-  AccountServiceLayer,
+  ListRegionsService,
+  ListRegionsServiceLayer,
   SdkError,
 } from "../src";
 
@@ -29,13 +29,13 @@ describe("AccountClientImpl", () => {
 
     const args: ListRegionsCommandInput = { AccountId: "000000000000" };
 
-    const program = Effect.flatMap(AccountService, (service) =>
+    const program = Effect.flatMap(ListRegionsService, (service) =>
       service.listRegions(args),
     );
 
     const result = await pipe(
       program,
-      Effect.provide(DefaultAccountServiceLayer),
+      Effect.provide(DefaultListRegionsServiceLayer),
       Effect.runPromiseExit,
     );
 
@@ -49,7 +49,7 @@ describe("AccountClientImpl", () => {
 
     const args: ListRegionsCommandInput = { AccountId: "000000000000" };
 
-    const program = Effect.flatMap(AccountService, (service) =>
+    const program = Effect.flatMap(ListRegionsService, (service) =>
       service.listRegions(args),
     );
 
@@ -59,13 +59,13 @@ describe("AccountClientImpl", () => {
         region: "eu-central-1",
       },
     );
-    const CustomAccountServiceLayer = AccountServiceLayer.pipe(
+    const CustomListRegionsServiceLayer = ListRegionsServiceLayer.pipe(
       Layer.provide(AccountClientConfigLayer),
     );
 
     const result = await pipe(
       program,
-      Effect.provide(CustomAccountServiceLayer),
+      Effect.provide(CustomListRegionsServiceLayer),
       Effect.runPromiseExit,
     );
 
@@ -79,7 +79,7 @@ describe("AccountClientImpl", () => {
 
     const args: ListRegionsCommandInput = { AccountId: "000000000000" };
 
-    const program = Effect.flatMap(AccountService, (service) =>
+    const program = Effect.flatMap(ListRegionsService, (service) =>
       service.listRegions(args),
     );
 
@@ -87,13 +87,13 @@ describe("AccountClientImpl", () => {
       AccountClientInstance,
       new AccountClient({ region: "eu-central-1" }),
     );
-    const CustomAccountServiceLayer = BaseAccountServiceLayer.pipe(
+    const CustomListRegionsServiceLayer = BaseListRegionsServiceLayer.pipe(
       Layer.provide(AccountClientInstanceLayer),
     );
 
     const result = await pipe(
       program,
-      Effect.provide(CustomAccountServiceLayer),
+      Effect.provide(CustomListRegionsServiceLayer),
       Effect.runPromiseExit,
     );
 
@@ -107,7 +107,7 @@ describe("AccountClientImpl", () => {
 
     const args: ListRegionsCommandInput = { AccountId: "000000000000" };
 
-    const program = Effect.flatMap(AccountService, (service) =>
+    const program = Effect.flatMap(ListRegionsService, (service) =>
       service.listRegions(args),
     );
 
@@ -118,14 +118,14 @@ describe("AccountClientImpl", () => {
         (config) => new AccountClient({ ...config, region: "eu-central-1" }),
       ),
     );
-    const CustomAccountServiceLayer = BaseAccountServiceLayer.pipe(
+    const CustomListRegionsServiceLayer = BaseListRegionsServiceLayer.pipe(
       Layer.provide(AccountClientInstanceLayer),
       Layer.provide(DefaultAccountClientConfigLayer),
     );
 
     const result = await pipe(
       program,
-      Effect.provide(CustomAccountServiceLayer),
+      Effect.provide(CustomListRegionsServiceLayer),
       Effect.runPromiseExit,
     );
 
@@ -139,13 +139,13 @@ describe("AccountClientImpl", () => {
 
     const args: ListRegionsCommandInput = { AccountId: "000000000000" };
 
-    const program = Effect.flatMap(AccountService, (service) =>
+    const program = Effect.flatMap(ListRegionsService, (service) =>
       service.listRegions(args),
     );
 
     const result = await pipe(
       program,
-      Effect.provide(DefaultAccountServiceLayer),
+      Effect.provide(DefaultListRegionsServiceLayer),
       Effect.runPromiseExit,
     );
 

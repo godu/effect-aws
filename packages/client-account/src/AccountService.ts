@@ -1,6 +1,7 @@
 /**
  * @since 1.0.0
  */
+
 import {
   AccountServiceException as SdkAccountServiceException,
   DeleteAlternateContactCommand,
@@ -25,9 +26,13 @@ import {
   type ListRegionsResponse,
   type PutAlternateContactRequest,
   type PutContactInformationRequest,
+  AccountClientResolvedConfig,
+  ServiceInputTypes,
+  ServiceOutputTypes,
 } from "@aws-sdk/client-account";
 import type { HttpHandlerOptions as __HttpHandlerOptions } from "@aws-sdk/types";
-import { Context, Data, Effect, Layer, Record } from "effect";
+import type { CommandImpl } from "@smithy/smithy-client";
+import { Context, Data, Effect, Layer } from "effect";
 import {
   AccountClientInstance,
   AccountClientInstanceLayer,
@@ -44,28 +49,8 @@ import {
   SdkError,
 } from "./Errors";
 
-const commands = {
-  DeleteAlternateContactCommand,
-  DisableRegionCommand,
-  EnableRegionCommand,
-  GetAlternateContactCommand,
-  GetContactInformationCommand,
-  GetRegionOptStatusCommand,
-  ListRegionsCommand,
-  PutAlternateContactCommand,
-  PutContactInformationCommand,
-};
-
-/**
- * @since 1.0.0
- * @category models
- */
-export interface AccountService {
+export interface DeleteAlternateContactService {
   readonly _: unique symbol;
-
-  /**
-   * @see {@link DeleteAlternateContactCommand}
-   */
   deleteAlternateContact(
     args: DeleteAlternateContactRequest,
     options?: __HttpHandlerOptions,
@@ -78,10 +63,10 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
+}
 
-  /**
-   * @see {@link DisableRegionCommand}
-   */
+export interface DisableRegionService {
+  readonly _: unique symbol;
   disableRegion(
     args: DisableRegionRequest,
     options?: __HttpHandlerOptions,
@@ -94,10 +79,10 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
+}
 
-  /**
-   * @see {@link EnableRegionCommand}
-   */
+export interface EnableRegionService {
+  readonly _: unique symbol;
   enableRegion(
     args: EnableRegionRequest,
     options?: __HttpHandlerOptions,
@@ -110,10 +95,10 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
+}
 
-  /**
-   * @see {@link GetAlternateContactCommand}
-   */
+export interface GetAlternateContactService {
+  readonly _: unique symbol;
   getAlternateContact(
     args: GetAlternateContactRequest,
     options?: __HttpHandlerOptions,
@@ -126,10 +111,10 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
+}
 
-  /**
-   * @see {@link GetContactInformationCommand}
-   */
+export interface GetContactInformationService {
+  readonly _: unique symbol;
   getContactInformation(
     args: GetContactInformationRequest,
     options?: __HttpHandlerOptions,
@@ -142,10 +127,10 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
+}
 
-  /**
-   * @see {@link GetRegionOptStatusCommand}
-   */
+export interface GetRegionOptStatusService {
+  readonly _: unique symbol;
   getRegionOptStatus(
     args: GetRegionOptStatusRequest,
     options?: __HttpHandlerOptions,
@@ -157,10 +142,9 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
-
-  /**
-   * @see {@link ListRegionsCommand}
-   */
+}
+export interface ListRegionsService {
+  readonly _: unique symbol;
   listRegions(
     args: ListRegionsRequest,
     options?: __HttpHandlerOptions,
@@ -172,10 +156,9 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
-
-  /**
-   * @see {@link PutAlternateContactCommand}
-   */
+}
+export interface PutAlternateContactService {
+  readonly _: unique symbol;
   putAlternateContact(
     args: PutAlternateContactRequest,
     options?: __HttpHandlerOptions,
@@ -187,10 +170,9 @@ export interface AccountService {
     | TooManyRequestsException
     | ValidationException
   >;
-
-  /**
-   * @see {@link PutContactInformationCommand}
-   */
+}
+export interface PutContactInformationService {
+  readonly _: unique symbol;
   putContactInformation(
     args: PutContactInformationRequest,
     options?: __HttpHandlerOptions,
@@ -203,27 +185,63 @@ export interface AccountService {
     | ValidationException
   >;
 }
-
-/**
- * @since 1.0.0
- * @category tags
- */
-export const AccountService = Context.GenericTag<AccountService>(
-  "@effect-aws/client-account/AccountService",
+export const DeleteAlternateContactService =
+  Context.GenericTag<DeleteAlternateContactService>(
+    "@effect-aws/client-account/DeleteAlternateContactService",
+  );
+export const DisableRegionService = Context.GenericTag<DisableRegionService>(
+  "@effect-aws/client-account/DisableRegionService",
 );
+export const EnableRegionService = Context.GenericTag<EnableRegionService>(
+  "@effect-aws/client-account/EnableRegionService",
+);
+export const GetAlternateContactService =
+  Context.GenericTag<GetAlternateContactService>(
+    "@effect-aws/client-account/GetAlternateContactService",
+  );
+export const GetContactInformationService =
+  Context.GenericTag<GetContactInformationService>(
+    "@effect-aws/client-account/GetContactInformationService",
+  );
+export const GetRegionOptStatusService =
+  Context.GenericTag<GetRegionOptStatusService>(
+    "@effect-aws/client-account/GetRegionOptStatusService",
+  );
+export const ListRegionsService = Context.GenericTag<ListRegionsService>(
+  "@effect-aws/client-account/ListRegionsService",
+);
+export const PutAlternateContactService =
+  Context.GenericTag<PutAlternateContactService>(
+    "@effect-aws/client-account/PutAlternateContactService",
+  );
+export const PutContactInformationService =
+  Context.GenericTag<PutContactInformationService>(
+    "@effect-aws/client-account/PutContactInformationService",
+  );
 
 /**
  * @since 1.0.0
  * @category constructors
  */
-export const makeAccountService = Effect.gen(function* (_) {
-  const client = yield* _(AccountClientInstance);
+const makeService = <
+  Input extends ServiceInputTypes,
+  Output extends ServiceOutputTypes,
+  CommandType extends CommandImpl<
+    Input,
+    Output,
+    AccountClientResolvedConfig,
+    ServiceInputTypes,
+    ServiceOutputTypes
+  >,
+>(
+  Command: new (input: Input) => CommandType,
+) =>
+  Effect.gen(function* (_) {
+    const client = yield* _(AccountClientInstance);
 
-  return Record.toEntries(commands).reduce((acc, [command]) => {
-    const CommandCtor = commands[command] as any;
-    const methodImpl = (args: any, options: any) =>
+    return (input: Input, options?: __HttpHandlerOptions) =>
       Effect.tryPromise({
-        try: () => client.send(new CommandCtor(args), options ?? {}),
+        try: () => client.send(new Command(input), options ?? {}),
         catch: (e) => {
           if (e instanceof SdkAccountServiceException) {
             const ServiceException = Data.tagged<
@@ -247,35 +265,212 @@ export const makeAccountService = Effect.gen(function* (_) {
           throw e;
         },
       });
-    const methodName = (command[0].toLowerCase() + command.slice(1)).replace(
-      /Command$/,
-      "",
-    );
-    return { ...acc, [methodName]: methodImpl };
-  }, {}) as AccountService;
-});
+  });
 
-/**
- * @since 1.0.0
- * @category layers
- */
-export const BaseAccountServiceLayer = Layer.effect(
-  AccountService,
-  makeAccountService,
+export const BaseDeleteAlternateContactServiceLayer = Layer.effect(
+  DeleteAlternateContactService,
+  makeService(DeleteAlternateContactCommand).pipe(
+    Effect.map(
+      (deleteAlternateContact) =>
+        ({
+          deleteAlternateContact,
+        }) as unknown as DeleteAlternateContactService,
+    ),
+  ),
+);
+export const BaseDisableRegionServiceLayer = Layer.effect(
+  DisableRegionService,
+  makeService(DisableRegionCommand).pipe(
+    Effect.map(
+      (disableRegion) =>
+        ({
+          disableRegion,
+        }) as unknown as DisableRegionService,
+    ),
+  ),
+);
+export const BaseEnableRegionServiceLayer = Layer.effect(
+  EnableRegionService,
+  makeService(EnableRegionCommand).pipe(
+    Effect.map(
+      (enableRegion) =>
+        ({
+          enableRegion,
+        }) as unknown as EnableRegionService,
+    ),
+  ),
+);
+export const BaseGetAlternateContactServiceLayer = Layer.effect(
+  GetAlternateContactService,
+  makeService(GetAlternateContactCommand).pipe(
+    Effect.map(
+      (getAlternateContact) =>
+        ({
+          getAlternateContact,
+        }) as unknown as GetAlternateContactService,
+    ),
+  ),
+);
+export const BaseGetContactInformationServiceLayer = Layer.effect(
+  GetContactInformationService,
+  makeService(GetContactInformationCommand).pipe(
+    Effect.map(
+      (getContactInformation) =>
+        ({
+          getContactInformation,
+        }) as unknown as GetContactInformationService,
+    ),
+  ),
+);
+export const BaseGetRegionOptStatusServiceLayer = Layer.effect(
+  GetRegionOptStatusService,
+  makeService(GetRegionOptStatusCommand).pipe(
+    Effect.map(
+      (getRegionOptStatus) =>
+        ({
+          getRegionOptStatus,
+        }) as unknown as GetRegionOptStatusService,
+    ),
+  ),
+);
+export const BaseListRegionsServiceLayer = Layer.effect(
+  ListRegionsService,
+  makeService(ListRegionsCommand).pipe(
+    Effect.map(
+      (listRegions) =>
+        ({
+          listRegions,
+        }) as unknown as ListRegionsService,
+    ),
+  ),
+);
+export const BasePutAlternateContactServiceLayer = Layer.effect(
+  PutAlternateContactService,
+  makeService(PutAlternateContactCommand).pipe(
+    Effect.map(
+      (putAlternateContact) =>
+        ({
+          putAlternateContact,
+        }) as unknown as PutAlternateContactService,
+    ),
+  ),
+);
+export const BasePutContactInformationServiceLayer = Layer.effect(
+  PutContactInformationService,
+  makeService(PutContactInformationCommand).pipe(
+    Effect.map(
+      (putContactInformation) =>
+        ({
+          putContactInformation,
+        }) as unknown as PutContactInformationService,
+    ),
+  ),
 );
 
 /**
  * @since 1.0.0
  * @category layers
  */
-export const AccountServiceLayer = BaseAccountServiceLayer.pipe(
+// export const BaseAccountServiceLayer = Layer.effect(
+//   AccountService,
+//   makeAccountService,
+// );
+
+/**
+ * @since 1.0.0
+ * @category layers
+ */
+
+export const DeleteAlternateContactServiceLayer =
+  BaseDeleteAlternateContactServiceLayer.pipe(
+    Layer.provide(AccountClientInstanceLayer),
+  );
+export const DisableRegionServiceLayer = BaseDisableRegionServiceLayer.pipe(
   Layer.provide(AccountClientInstanceLayer),
 );
+export const EnableRegionServiceLayer = BaseEnableRegionServiceLayer.pipe(
+  Layer.provide(AccountClientInstanceLayer),
+);
+export const GetAlternateContactServiceLayer =
+  BaseGetAlternateContactServiceLayer.pipe(
+    Layer.provide(AccountClientInstanceLayer),
+  );
+export const GetContactInformationServiceLayer =
+  BaseGetContactInformationServiceLayer.pipe(
+    Layer.provide(AccountClientInstanceLayer),
+  );
+export const GetRegionOptStatusServiceLayer =
+  BaseGetRegionOptStatusServiceLayer.pipe(
+    Layer.provide(AccountClientInstanceLayer),
+  );
+export const ListRegionsServiceLayer = BaseListRegionsServiceLayer.pipe(
+  Layer.provide(AccountClientInstanceLayer),
+);
+export const PutAlternateContactServiceLayer =
+  BasePutAlternateContactServiceLayer.pipe(
+    Layer.provide(AccountClientInstanceLayer),
+  );
+export const PutContactInformationServiceLayer =
+  BasePutContactInformationServiceLayer.pipe(
+    Layer.provide(AccountClientInstanceLayer),
+  );
+export const AccountServiceLayer = Layer.mergeAll(
+  DeleteAlternateContactServiceLayer,
+  DisableRegionServiceLayer,
+  EnableRegionServiceLayer,
+  GetAlternateContactServiceLayer,
+  GetContactInformationServiceLayer,
+  GetRegionOptStatusServiceLayer,
+  ListRegionsServiceLayer,
+  PutAlternateContactServiceLayer,
+  PutContactInformationServiceLayer,
+);
 
 /**
  * @since 1.0.0
  * @category layers
  */
-export const DefaultAccountServiceLayer = AccountServiceLayer.pipe(
+export const DefaultDeleteAlternateContactServiceLayer =
+  DeleteAlternateContactServiceLayer.pipe(
+    Layer.provide(DefaultAccountClientConfigLayer),
+  );
+export const DefaultDisableRegionServiceLayer = DisableRegionServiceLayer.pipe(
   Layer.provide(DefaultAccountClientConfigLayer),
+);
+export const DefaultEnableRegionServiceLayer = EnableRegionServiceLayer.pipe(
+  Layer.provide(DefaultAccountClientConfigLayer),
+);
+export const DefaultGetAlternateContactServiceLayer =
+  GetAlternateContactServiceLayer.pipe(
+    Layer.provide(DefaultAccountClientConfigLayer),
+  );
+export const DefaultGetContactInformationServiceLayer =
+  GetContactInformationServiceLayer.pipe(
+    Layer.provide(DefaultAccountClientConfigLayer),
+  );
+export const DefaultGetRegionOptStatusServiceLayer =
+  GetRegionOptStatusServiceLayer.pipe(
+    Layer.provide(DefaultAccountClientConfigLayer),
+  );
+export const DefaultListRegionsServiceLayer = ListRegionsServiceLayer.pipe(
+  Layer.provide(DefaultAccountClientConfigLayer),
+);
+export const DefaultPutAlternateContactServiceLayer =
+  PutAlternateContactServiceLayer.pipe(
+    Layer.provide(DefaultAccountClientConfigLayer),
+  );
+export const DefaultPutContactInformationServiceLayer =
+  PutContactInformationServiceLayer.pipe(
+    Layer.provide(DefaultAccountClientConfigLayer),
+  );
+export const DefaultAccountServiceLayer = Layer.mergeAll(
+  DefaultDeleteAlternateContactServiceLayer,
+  DefaultDisableRegionServiceLayer,
+  DefaultEnableRegionServiceLayer,
+  DefaultGetAlternateContactServiceLayer,
+  DefaultGetContactInformationServiceLayer,
+  DefaultGetRegionOptStatusServiceLayer,
+  DefaultListRegionsServiceLayer,
+  DefaultPutAlternateContactServiceLayer,
+  DefaultPutContactInformationServiceLayer,
 );

@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-account": "^3.556.0",
-    "@aws-sdk/types": "^3"
+    "@aws-sdk/types": "^3",
+    "@smithy/smithy-client": "^2.5.1"
   },
   "main": "lib/index.js",
   "license": "MIT",
