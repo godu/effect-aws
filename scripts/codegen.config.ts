@@ -3,6 +3,11 @@ export const config: Record<string, { command: string; input: string }> = {
     command: "ListRegions",
     input: '{"AccountId": "000000000000"}',
   },
+  "client-cloudsearch": {
+    command: "CreateDomain",
+    input:
+      '{"DomainName": "my-search"}',
+  },
   "client-cloudtrail": {
     command: "LookupEvents",
     input:
@@ -39,6 +44,10 @@ export const config: Record<string, { command: string; input: string }> = {
   "client-kinesis": {
     command: "ListShards",
     input: '{"StreamName": "my-stream"}',
+  },
+  "client-kms": {
+    command: "DescribeKey",
+    input: '{"KeyId": "my-key"}',
   },
   "client-mq": {
     command: "ListBrokers",

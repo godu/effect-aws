@@ -3,6 +3,7 @@
 packages:
   - packages/client-account
   - packages/client-api-gateway-management-api
+  - packages/client-cloudsearch
   - packages/client-cloudtrail
   - packages/client-cloudwatch
   - packages/client-cloudwatch-events
@@ -14,6 +15,7 @@ packages:
   - packages/client-eventbridge
   - packages/client-iam
   - packages/client-kinesis
+  - packages/client-kms
   - packages/client-lambda
   - packages/client-mq
   - packages/client-opensearch

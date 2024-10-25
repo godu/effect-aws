@@ -15,7 +15,6 @@ import {
   Record,
   String,
   Struct,
-  Tuple,
   Exit,
   Predicate,
 } from "effect";
@@ -453,9 +452,9 @@ export const make${sdkName}Service = Effect.gen(function* (_) {
 
   return Record.toEntries(commands).reduce((acc, [command]) => {
     const CommandCtor = commands[command] as any;
-    const methodImpl = (args: any, options: any) =>
+    const methodImpl = (input: any, options: Omit<__HttpHandlerOptions, 'abortSignal'> = {}) =>
       Effect.tryPromise({
-        try: () => client.send(new CommandCtor(args), options ?? {}),
+        try: (abortSignal) => client.send(new CommandCtor(input), {...options, abortSignal}),
         catch: (e) => {
           if (e instanceof Sdk${sdkName}ServiceException) {
             const ServiceException = Data.tagged<

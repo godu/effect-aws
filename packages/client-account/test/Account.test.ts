@@ -27,11 +27,9 @@ describe("AccountClientImpl", () => {
   it("default", async () => {
     clientMock.reset().on(ListRegionsCommand).resolves({});
 
-    const args: ListRegionsCommandInput = { AccountId: "000000000000" };
+    const args : ListRegionsCommandInput = {"AccountId": "000000000000"};
 
-    const program = Effect.flatMap(AccountService, (service) =>
-      service.listRegions(args),
-    );
+    const program = Effect.flatMap(AccountService, (service) => service.listRegions(args));
 
     const result = await pipe(
       program,
@@ -47,18 +45,13 @@ describe("AccountClientImpl", () => {
   it("configurable", async () => {
     clientMock.reset().on(ListRegionsCommand).resolves({});
 
-    const args: ListRegionsCommandInput = { AccountId: "000000000000" };
+    const args : ListRegionsCommandInput = {"AccountId": "000000000000"};
 
-    const program = Effect.flatMap(AccountService, (service) =>
-      service.listRegions(args),
-    );
+    const program = Effect.flatMap(AccountService, (service) => service.listRegions(args));
 
-    const AccountClientConfigLayer = Layer.succeed(
-      AccountClientInstanceConfig,
-      {
-        region: "eu-central-1",
-      },
-    );
+    const AccountClientConfigLayer = Layer.succeed(AccountClientInstanceConfig, {
+      region: "eu-central-1",
+    });
     const CustomAccountServiceLayer = AccountServiceLayer.pipe(
       Layer.provide(AccountClientConfigLayer),
     );
@@ -77,11 +70,9 @@ describe("AccountClientImpl", () => {
   it("base", async () => {
     clientMock.reset().on(ListRegionsCommand).resolves({});
 
-    const args: ListRegionsCommandInput = { AccountId: "000000000000" };
+    const args : ListRegionsCommandInput = {"AccountId": "000000000000"};
 
-    const program = Effect.flatMap(AccountService, (service) =>
-      service.listRegions(args),
-    );
+    const program = Effect.flatMap(AccountService, (service) => service.listRegions(args));
 
     const AccountClientInstanceLayer = Layer.succeed(
       AccountClientInstance,
@@ -105,11 +96,9 @@ describe("AccountClientImpl", () => {
   it("extended", async () => {
     clientMock.reset().on(ListRegionsCommand).resolves({});
 
-    const args: ListRegionsCommandInput = { AccountId: "000000000000" };
+    const args : ListRegionsCommandInput = {"AccountId": "000000000000"};
 
-    const program = Effect.flatMap(AccountService, (service) =>
-      service.listRegions(args),
-    );
+    const program = Effect.flatMap(AccountService, (service) => service.listRegions(args));
 
     const AccountClientInstanceLayer = Layer.effect(
       AccountClientInstance,
@@ -137,11 +126,9 @@ describe("AccountClientImpl", () => {
   it("fail", async () => {
     clientMock.reset().on(ListRegionsCommand).rejects(new Error("test"));
 
-    const args: ListRegionsCommandInput = { AccountId: "000000000000" };
+    const args : ListRegionsCommandInput = {"AccountId": "000000000000"};
 
-    const program = Effect.flatMap(AccountService, (service) =>
-      service.listRegions(args),
-    );
+    const program = Effect.flatMap(AccountService, (service) => service.listRegions(args));
 
     const result = await pipe(
       program,

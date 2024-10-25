@@ -35,25 +35,25 @@ import {
 import { DefaultAccountClientConfigLayer } from "./AccountClientInstanceConfig";
 import {
   type AccessDeniedException,
-  type InternalServerException,
-  type ResourceNotFoundException,
-  type TooManyRequestsException,
-  type ValidationException,
-  type ConflictException,
-  type TaggedException,
+ type InternalServerException,
+ type ResourceNotFoundException,
+ type TooManyRequestsException,
+ type ValidationException,
+ type ConflictException,
+ type TaggedException,
   SdkError,
 } from "./Errors";
 
 const commands = {
   DeleteAlternateContactCommand,
-  DisableRegionCommand,
-  EnableRegionCommand,
-  GetAlternateContactCommand,
-  GetContactInformationCommand,
-  GetRegionOptStatusCommand,
-  ListRegionsCommand,
-  PutAlternateContactCommand,
-  PutContactInformationCommand,
+ DisableRegionCommand,
+ EnableRegionCommand,
+ GetAlternateContactCommand,
+ GetContactInformationCommand,
+ GetRegionOptStatusCommand,
+ ListRegionsCommand,
+ PutAlternateContactCommand,
+ PutContactInformationCommand
 };
 
 /**
@@ -70,14 +70,14 @@ export interface AccountService {
     args: DeleteAlternateContactRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    void,
+  void,
     | SdkError
-    | AccessDeniedException
-    | InternalServerException
-    | ResourceNotFoundException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| InternalServerException
+| ResourceNotFoundException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link DisableRegionCommand}
@@ -86,14 +86,14 @@ export interface AccountService {
     args: DisableRegionRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    void,
+  void,
     | SdkError
-    | AccessDeniedException
-    | ConflictException
-    | InternalServerException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| ConflictException
+| InternalServerException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link EnableRegionCommand}
@@ -102,14 +102,14 @@ export interface AccountService {
     args: EnableRegionRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    void,
+  void,
     | SdkError
-    | AccessDeniedException
-    | ConflictException
-    | InternalServerException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| ConflictException
+| InternalServerException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link GetAlternateContactCommand}
@@ -118,14 +118,14 @@ export interface AccountService {
     args: GetAlternateContactRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    GetAlternateContactResponse,
+  GetAlternateContactResponse,
     | SdkError
-    | AccessDeniedException
-    | InternalServerException
-    | ResourceNotFoundException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| InternalServerException
+| ResourceNotFoundException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link GetContactInformationCommand}
@@ -134,14 +134,14 @@ export interface AccountService {
     args: GetContactInformationRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    GetContactInformationResponse,
+  GetContactInformationResponse,
     | SdkError
-    | AccessDeniedException
-    | InternalServerException
-    | ResourceNotFoundException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| InternalServerException
+| ResourceNotFoundException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link GetRegionOptStatusCommand}
@@ -150,13 +150,13 @@ export interface AccountService {
     args: GetRegionOptStatusRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    GetRegionOptStatusResponse,
+  GetRegionOptStatusResponse,
     | SdkError
-    | AccessDeniedException
-    | InternalServerException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| InternalServerException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link ListRegionsCommand}
@@ -165,13 +165,13 @@ export interface AccountService {
     args: ListRegionsRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    ListRegionsResponse,
+  ListRegionsResponse,
     | SdkError
-    | AccessDeniedException
-    | InternalServerException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| InternalServerException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link PutAlternateContactCommand}
@@ -180,13 +180,13 @@ export interface AccountService {
     args: PutAlternateContactRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    void,
+  void,
     | SdkError
-    | AccessDeniedException
-    | InternalServerException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| InternalServerException
+| TooManyRequestsException
+| ValidationException
+  >
 
   /**
    * @see {@link PutContactInformationCommand}
@@ -195,13 +195,13 @@ export interface AccountService {
     args: PutContactInformationRequest,
     options?: __HttpHandlerOptions,
   ): Effect.Effect<
-    void,
+  void,
     | SdkError
-    | AccessDeniedException
-    | InternalServerException
-    | TooManyRequestsException
-    | ValidationException
-  >;
+| AccessDeniedException
+| InternalServerException
+| TooManyRequestsException
+| ValidationException
+  >
 }
 
 /**
@@ -221,9 +221,9 @@ export const makeAccountService = Effect.gen(function* (_) {
 
   return Record.toEntries(commands).reduce((acc, [command]) => {
     const CommandCtor = commands[command] as any;
-    const methodImpl = (args: any, options: any) =>
+    const methodImpl = (input: any, options: Omit<__HttpHandlerOptions, 'abortSignal'> = {}) =>
       Effect.tryPromise({
-        try: () => client.send(new CommandCtor(args), options ?? {}),
+        try: (abortSignal) => client.send(new CommandCtor(input), {...options, abortSignal}),
         catch: (e) => {
           if (e instanceof SdkAccountServiceException) {
             const ServiceException = Data.tagged<

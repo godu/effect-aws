@@ -40,7 +40,6 @@ export const AccountClientInstanceLayer = Layer.effect(
  * @since 1.0.0
  * @category layers
  */
-export const DefaultAccountClientInstanceLayer =
-  AccountClientInstanceLayer.pipe(
-    Layer.provide(DefaultAccountClientConfigLayer),
-  );
+export const DefaultAccountClientInstanceLayer = AccountClientInstanceLayer.pipe(
+  Layer.provide(DefaultAccountClientConfigLayer),
+);

@@ -83,6 +83,7 @@ const dynamodbLib = new TypeScriptLibProject({
 const clients = [
   {name: 'account'},
   {name: 'cloudtrail'},
+  {name: 'cloudsearch'},
   {name: 'cloudwatch-events'},
   {name: 'cloudwatch-logs'},
   {name: 'cloudwatch'},
@@ -92,6 +93,7 @@ const clients = [
   {name: 'eventbridge'},
   {name: 'iam'},
   {name: 'kinesis'},
+  {name: 'kms'},
   {name: 'lambda'},
   {name: 'mq'},
   {name: 'opensearch'},

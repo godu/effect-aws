@@ -1,10 +1,10 @@
-import type {
+import type { 
   AccessDeniedException as SdkAccessDeniedException,
   ConflictException as SdkConflictException,
   InternalServerException as SdkInternalServerException,
   ResourceNotFoundException as SdkResourceNotFoundException,
   TooManyRequestsException as SdkTooManyRequestsException,
-  ValidationException as SdkValidationException,
+  ValidationException as SdkValidationException
 } from "@aws-sdk/client-account";
 import * as Data from "effect/Data";
 
@@ -14,12 +14,9 @@ export type TaggedException<T extends { name: string }> = T & {
 
 export type AccessDeniedException = TaggedException<SdkAccessDeniedException>;
 export type ConflictException = TaggedException<SdkConflictException>;
-export type InternalServerException =
-  TaggedException<SdkInternalServerException>;
-export type ResourceNotFoundException =
-  TaggedException<SdkResourceNotFoundException>;
-export type TooManyRequestsException =
-  TaggedException<SdkTooManyRequestsException>;
+export type InternalServerException = TaggedException<SdkInternalServerException>;
+export type ResourceNotFoundException = TaggedException<SdkResourceNotFoundException>;
+export type TooManyRequestsException = TaggedException<SdkTooManyRequestsException>;
 export type ValidationException = TaggedException<SdkValidationException>;
 
 export type SdkError = TaggedException<Error & { name: "SdkError" }>;
