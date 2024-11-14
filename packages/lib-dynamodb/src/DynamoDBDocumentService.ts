@@ -69,6 +69,7 @@ import { Data, Effect, Layer, Record } from "effect";
 import {
   DynamoDBDocumentClientInstance,
   DynamoDBDocumentClientInstanceLayer,
+  makeDynamoDBDocumentClientInstance,
 } from "./DynamoDBDocumentClientInstance";
 import {
   DefaultDynamoDBDocumentClientConfigLayer,
@@ -387,12 +388,12 @@ export class DynamoDBDocumentService extends Effect.Tag(
     this,
     makeDynamoDBDocumentService,
   ).pipe(
-    Layer.provide(DynamoDBDocumentClientInstanceLayer),
+    Layer.provide(Layer.effect(DynamoDBDocumentClientInstance, makeDynamoDBDocumentClientInstance)),
     Layer.provide(DefaultDynamoDBDocumentClientConfigLayer),
   );
   static readonly layer = (config: TranslateConfig) =>
     Layer.effect(this, makeDynamoDBDocumentService).pipe(
-      Layer.provide(DynamoDBDocumentClientInstanceLayer),
+      Layer.provide(Layer.effect(DynamoDBDocumentClientInstance, makeDynamoDBDocumentClientInstance)),
       Layer.provide(
         Layer.effect(
           DynamoDBDocumentClientInstanceConfig,
@@ -403,13 +404,13 @@ export class DynamoDBDocumentService extends Effect.Tag(
       ),
     );
   static readonly baseLayer = (
-    evaluate: (defaultConfig: DynamoDBClientConfig) => DynamoDBDocumentClient,
+    evaluate: (defaultConfig: TranslateConfig) => DynamoDBDocumentClient,
   ) =>
     Layer.effect(this, makeDynamoDBDocumentService).pipe(
       Layer.provide(
         Layer.effect(
           DynamoDBDocumentClientInstance,
-          Effect.map(makeDefaultDynamoDBClientInstanceConfig, evaluate),
+          Effect.map(makeDefaultDynamoDBDocumentClientInstanceConfig, evaluate),
         ),
       ),
     );
