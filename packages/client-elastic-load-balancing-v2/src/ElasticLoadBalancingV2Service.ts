@@ -304,6 +304,10 @@ const paginators = {
   paginateDescribeTrustStores,
 };
 
+/**
+ * @since 1.0.0
+ * @category models
+ */
 export interface ElasticLoadBalancingV2Service$ {
   /**
    * @see {@link AddListenerCertificatesCommand}

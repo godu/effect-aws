@@ -465,6 +465,10 @@ const paginators = {
 ` :
         ""
     }
+/**
+ * @since 1.0.0
+ * @category models
+ */
 export interface ${sdkName}Service$ {
 ${
       pipe(
