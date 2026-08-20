@@ -1,10 +1,10 @@
 {
-  "name": "@effect-aws/http-handler",
-  "description": "Effectful AWS HTTP handler",
+  "name": "@effect-aws/client-elastic-load-balancing-v2",
+  "description": "Effectful AWS Elastic Load Balancing v2 client",
   "repository": {
     "type": "git",
     "url": "github:floydspace/effect-aws",
-    "directory": "packages/http-handler"
+    "directory": "packages/client-elastic-load-balancing-v2"
   },
   "scripts": {
     "build": "npx projen build",
@@ -25,28 +25,25 @@
     "organization": false
   },
   "devDependencies": {
-    "@effect-aws/commons": "workspace:^",
     "@types/node": "ts5.4",
     "effect": "4.0.0-beta.93",
     "typescript": "^5.4.2"
   },
   "peerDependencies": {
-    "@effect-aws/commons": "workspace:^",
     "effect": ">=4.0.0-beta.66 <5.0.0"
   },
   "dependencies": {
-    "@smithy/protocol-http": "^5.5.10",
-    "@smithy/querystring-builder": "^4.4.10",
-    "@smithy/types": "^4.17.2"
+    "@aws-sdk/client-elastic-load-balancing-v2": "^3",
+    "@effect-aws/commons": "workspace:^"
   },
   "main": "build/cjs/index.js",
   "license": "MIT",
-  "homepage": "https://floydspace.github.io/effect-aws/docs/http-handler",
+  "homepage": "https://floydspace.github.io/effect-aws/docs/client-elastic-load-balancing-v2",
   "publishConfig": {
     "access": "public",
     "directory": "dist"
   },
-  "version": "1.0.0-beta.4",
+  "version": "0.0.0",
   "types": "build/dts/index.d.ts",
   "type": "module",
   "module": "build/esm/index.js",
