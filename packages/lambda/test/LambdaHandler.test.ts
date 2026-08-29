@@ -140,7 +140,7 @@ describe("LambdaHandler", () => {
               Effect.gen(function*() {
                 yield* HttpEffect.appendPreResponseHandler((_req, response) =>
                   Effect.orDie(
-                    HttpServerResponse.setCookie(response, "cookie key", "cookie value"),
+                    HttpServerResponse.setCookie(response, "cookie-key", "cookie value"),
                   )
                 );
 
@@ -171,12 +171,12 @@ describe("LambdaHandler", () => {
           headers: {
             "content-length": "13",
             "content-type": "text/plain",
-            "set-cookie": "cookie key=cookie%20value",
+            "set-cookie": "cookie-key=cookie%20value",
           },
           multiValueHeaders: {
             "content-length": ["13"],
             "content-type": ["text/plain"],
-            "set-cookie": ["cookie key=cookie%20value"],
+            "set-cookie": ["cookie-key=cookie%20value"],
           },
           isBase64Encoded: false,
         } satisfies APIGatewayProxyResult,
@@ -208,7 +208,7 @@ describe("LambdaHandler", () => {
             () =>
               HttpEffect.appendPreResponseHandler((_req, response) =>
                 Effect.orDie(
-                  HttpServerResponse.setCookie(response, "cookie key", "cookie value"),
+                  HttpServerResponse.setCookie(response, "cookie-key", "cookie value"),
                 )
               ).pipe(
                 Effect.flatMap(() => Effect.succeed("Hello, World!")),
@@ -234,7 +234,7 @@ describe("LambdaHandler", () => {
             "content-type": "text/plain",
           },
           cookies: [
-            "cookie key=cookie%20value",
+            "cookie-key=cookie%20value",
           ],
           isBase64Encoded: false,
         } satisfies APIGatewayProxyResultV2,
@@ -266,7 +266,7 @@ describe("LambdaHandler", () => {
             () =>
               HttpEffect.appendPreResponseHandler((_req, response) =>
                 Effect.orDie(
-                  HttpServerResponse.setCookie(response, "cookie key", "cookie value"),
+                  HttpServerResponse.setCookie(response, "cookie-key", "cookie value"),
                 )
               ).pipe(
                 Effect.flatMap(() => Effect.succeed("Hello, World!")),
@@ -291,7 +291,7 @@ describe("LambdaHandler", () => {
           multiValueHeaders: {
             "content-length": ["13"],
             "content-type": ["text/plain"],
-            "set-cookie": ["cookie key=cookie%20value"],
+            "set-cookie": ["cookie-key=cookie%20value"],
           },
           isBase64Encoded: false,
         } satisfies ALBResult,
@@ -407,7 +407,7 @@ describe("LambdaHandler", () => {
               () =>
                 HttpEffect.appendPreResponseHandler((_req, response) =>
                   Effect.orDie(
-                    HttpServerResponse.setCookie(response, "cookie key", "cookie value"),
+                    HttpServerResponse.setCookie(response, "cookie-key", "cookie value"),
                   )
                 ).pipe(
                   Effect.flatMap(() => Effect.succeed("Hello, World!")),
@@ -435,7 +435,7 @@ describe("LambdaHandler", () => {
             "content-type": "text/plain",
           },
           cookies: [
-            "cookie key=cookie%20value",
+            "cookie-key=cookie%20value",
           ],
         });
         expect(Buffer.concat(chunks).toString()).toBe("Hello, World!");

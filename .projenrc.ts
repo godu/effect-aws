@@ -41,19 +41,19 @@ new Readme(project, { org });
 new Eslint(project);
 new Vitest(project, { sharedSetupFiles: ["vitest.setup.ts"] });
 project.addDevDeps("vitest-mock-extended");
-project.addDevDeps("aws-sdk-client-mock", "aws-sdk-client-mock-vitest@^6.2.1");
+project.addDevDeps("aws-sdk-client-mock", "aws-sdk-client-mock-vitest");
 
-const effectDeps = ["effect@4.0.0-beta.93"];
+const effectDeps = ["effect@4.0.0-rc.112"];
 
 project.addScripts({ "codegen-client": "tsx ./scripts/codegen-cli.ts" });
-project.addDeps(...effectDeps, "@effect/platform-node@4.0.0-beta.93");
-project.addDevDeps("@effect/language-service", "@effect/vitest@4.0.0-beta.93");
+project.addDeps(...effectDeps, "@effect/platform-node@4.0.0-rc.112");
+project.addDevDeps("@effect/language-service", "@effect/vitest@4.0.0-rc.112");
 project.tsconfigBase?.file.addOverride("compilerOptions.plugins", [
   { name: "@effect/language-service" },
 ]);
 
 // Pages
-project.addDevDeps("vitepress", "vitepress-plugin-group-icons");
+project.addDevDeps("vitepress@2.0.0-alpha.19", "vitepress-plugin-group-icons");
 project.addTask("pages:dev", { exec: "vitepress dev pages" });
 project.addTask("pages:build", { exec: "vitepress build pages" });
 project.addTask("pages:preview", { exec: "vitepress preview pages" });
@@ -117,7 +117,7 @@ const lambda = new TypeScriptLibProject({
   parent: project,
   name: "lambda",
   description: "Effectful AWS Lambda handler",
-  devDeps: [...effectDeps, "@effect/platform-node-shared@4.0.0-beta.93", "@types/aws-lambda"],
+  devDeps: [...effectDeps, "@effect/platform-node-shared@4.0.0-rc.112", "@types/aws-lambda"],
   peerDeps: ["effect@>=4.0.0-beta.66 <5.0.0", "@effect/platform-node-shared@>=4.0.0 <5.0.0"],
   addExamples: true,
 });
