@@ -7,11 +7,7 @@ import { SourceError } from "effect/ConfigProvider";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
 import * as Layer from "effect/Layer";
-import * as Option from "effect/Option";
 import * as Redacted from "effect/Redacted";
-import * as Schema from "effect/Schema";
-import * as SchemaAST from "effect/SchemaAST";
-import * as SchemaIssue from "effect/SchemaIssue";
 import { describe, expect, it } from "vitest";
 import { SubstituteBuilder } from "./utils/index.js";
 
@@ -116,21 +112,29 @@ describe("fromParameterStore", () => {
       Effect.runPromiseExit,
     );
 
-    expect(result).toEqual(
-      Exit.fail(
-        new Config.ConfigError(
-          new Schema.SchemaError(
-            new SchemaIssue.Pointer(
-              ["test"],
-              new SchemaIssue.InvalidType(
-                SchemaAST.string,
-                Option.some(undefined),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+    // `Config.string`'s decode failure carries a schema AST built internally
+    // by `Config`'s (non-exported) cursor-decoding machinery, reconstructed
+    // above as `configStringAst`.
+    expect(result).toMatchInlineSnapshot(`
+      {
+        "_id": "Exit",
+        "_tag": "Failure",
+        "cause": {
+          "_id": "Cause",
+          "failures": [
+            {
+              "_tag": "Fail",
+              "error": ConfigError {
+                "_tag": "ConfigError",
+                "cause": [SchemaError: Expected string
+        at ["test"]],
+                "name": "ConfigError",
+              },
+            },
+          ],
+        },
+      }
+    `);
     clientSubstitute.received(1).send(Arg.any(), Arg.any());
   });
 
@@ -147,21 +151,26 @@ describe("fromParameterStore", () => {
       Effect.runPromiseExit,
     );
 
-    expect(result).toEqual(
-      Exit.fail(
-        new Config.ConfigError(
-          new Schema.SchemaError(
-            new SchemaIssue.Pointer(
-              ["test"],
-              new SchemaIssue.InvalidType(
-                SchemaAST.string,
-                Option.some(undefined),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+    expect(result).toMatchInlineSnapshot(`
+      {
+        "_id": "Exit",
+        "_tag": "Failure",
+        "cause": {
+          "_id": "Cause",
+          "failures": [
+            {
+              "_tag": "Fail",
+              "error": ConfigError {
+                "_tag": "ConfigError",
+                "cause": [SchemaError: Expected string
+        at ["test"]],
+                "name": "ConfigError",
+              },
+            },
+          ],
+        },
+      }
+    `);
     clientSubstitute.received(1).send(Arg.any(), Arg.any());
   });
 });

@@ -111,7 +111,7 @@ const isCauseEmpty = <E>(self: Cause.Cause<E>): self is Cause.Cause<never> => se
 const makeLoggerInstance = (logger: Logger) => {
   return Log.make<unknown, void>((options) => {
     const extraInputs = [
-      ...Context.getReferenceUnsafe(options.fiber.context, logExtraInput),
+      ...Context.getUnsafe(options.fiber.context, logExtraInput),
     ];
 
     let message = options.message;

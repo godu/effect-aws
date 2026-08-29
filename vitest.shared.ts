@@ -1,25 +1,29 @@
 import path from "node:path";
-import type { UserConfig } from "vitest/config";
+import type { ViteUserConfig as UserConfig } from "vitest/config";
 
 const alias = (pkg: string, dir = pkg) => {
   const name = `@effect-aws/${pkg}`
   const target = process.env.TEST_DIST !== undefined ? "dist/dist/esm" : "src"
   return ({
-    [`${name}/test`]: path.join(__dirname, "packages", dir, "test"),
-    [`${name}`]: path.join(__dirname, "packages", dir, target)
+    [`${name}/test`]: path.join(import.meta.dirname, "packages", dir, "test"),
+    [`${name}`]: path.join(import.meta.dirname, "packages", dir, target)
   })
 }
 
 const config: UserConfig = {
-  esbuild: {
-    target: "es2020"
-  },
   resolve: {
     mainFields: ["module", "main"],
   },
+  ssr: {
+    resolve: {
+      mainFields: ["module", "main"],
+    },
+    noExternal: [/^@aws-sdk\//],
+  },
   test: {
-    setupFiles: [path.join(__dirname, "vitest.setup.ts")],
+    setupFiles: [path.join(import.meta.dirname, "vitest.setup.ts")],
     include: ["test/**/*.test.ts"],
+    exclude: ["**/node_modules/**", "**/.git/**", "**/.direnv/**"],
     alias: {
       ...alias("commons"),
       ...alias("client-s3"),
